@@ -10,8 +10,8 @@ const HomePage=()=> {
     const [inputValue,setInputValue]=useState('');
     const [fetchedData,setFetchedData]=useState(['']);
     const [searchValue,setSearchValue]=useState('');
-    const [start_datetime,setStart_datetime]=useState('23-09-2021 10:32:58');
-    const [end_datetime,setEnd_datetime]=useState('24-09-5021 10:32:58');
+    const [start_datetime,setStart_datetime]=useState('2021-09-05 10:32:58');
+    const [end_datetime,setEnd_datetime]=useState('2025-09-05  10:32:58');
     const [filter,setFilter]=useState(true);
     const [result,setResult]=useState('');
 
@@ -45,7 +45,7 @@ const HomePage=()=> {
         
         axios.post('https://ami-coding-pari-na-default-rtdb.asia-southeast1.firebasedatabase.app/Userdata.json',{
             input_values:sortedData.toString(),
-            timestamp:moment().format("DD-MM-YYYY hh:mm:ss"),
+            timestamp:moment().format("YYYY-MM-DD hh:mm:ss"),
             user_id:localStorage.getItem('userID')
         })
         .then(response =>{
@@ -85,12 +85,40 @@ const HomePage=()=> {
     const sortInputValue=(data)=>{
 
         let sortedData= data.sort((a,b) => b - a);
-        //setDataToDB(sortedData);
+       // setDataToDB(sortedData);
         getDataFromDB();
 
         console.log(sortedData, ' sortedData');
+    }
+
+    const filterHandaler=()=>{
+        
+        var dateStart = new Date(start_datetime);
+        var dateEnd = new Date(end_datetime);
+        const filterdValues = [];
 
 
+
+        fetchedData.map(d=>{
+            var date =  new Date(d.timestamp);
+
+            console.log(dateStart<date, ' d');
+
+            if(date>=dateStart && date<=dateEnd){
+                filterdValues.push(d);
+            }
+        
+        })
+
+    
+        dateStart = new Date('2012-09-01');
+        dateEnd = new Date('06/25/2013');
+
+       console.log(dateStart);
+
+        setFetchedData(filterdValues);
+    
+    
     }
 
     useEffect(()=>{
@@ -106,7 +134,7 @@ const HomePage=()=> {
                     <tr>
                         <td>Input values: </td>
                         <td><input onChange={e=>setInputValue(e.target.value)}/> </td>
-                      
+                    
                     </tr>
                     <tr>
                         <td>Search values: </td>
@@ -135,7 +163,7 @@ const HomePage=()=> {
                 <tr>
                     <td><input type='date' placeholder='start_datetime' onChange={e=>setStart_datetime(e.target.value)}/></td>
                     <td><input type='date' placeholder='end_datetime' onChange={e=>setEnd_datetime(e.target.value)}/></td>
-                    <td><button onClick={()=>searchData()}>Filter</button></td>
+                    <td><button onClick={()=>filterHandaler()}>Filter</button></td>
                 </tr>
             </table>
             <br/>
@@ -145,15 +173,12 @@ const HomePage=()=> {
                     <th>Timestamp</th>
                 </tr>
                 {fetchedData.map(d=>{
-                   
+                
                     return(
-                        Date(d.timestamp)>=  Date(start_datetime) &&   Date(d.timestamp)<=  Date(end_datetime) && filter?
-                        
                         <tr>
                             <td>{d.input_values}</td>
-                            <td>{Date(d.timestamp)}</td>
+                            <td>{d.timestamp}</td>
                         </tr>
-                        :<h2>{Date(d.timestamp)}</h2>
                     )
                 })}
             </table>
