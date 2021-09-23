@@ -76,43 +76,46 @@ const PriviousValue=()=> {
         <br/>
         <h2>Previous Values</h2>
         <br/>
-        <div>
-            <table  style={{width:'700px',fontWeight:'bold'}}>
-                <tr>
-                    <td>Start Datetime</td>
-                    <td><input type='date' placeholder='start_datetime' onChange={e=>setStart_datetime(e.target.value)}/></td>
+        {fetchedData!=''?
+            <div>
+                <table  style={{width:'480px',fontWeight:'bold'}}>
+                    <tr>
+                        <td>Start Datetime</td>
+                        <td><input type='date' placeholder='start_datetime' onChange={e=>setStart_datetime(e.target.value)}/></td>
 
-                </tr>
-                <tr>
-                    <td>End Datetime</td>
-                    <td><input type='date' placeholder='end_datetime' onChange={e=>setEnd_datetime(e.target.value)}/></td>
-                </tr>
-            </table>
-            <br/>
-            <button onClick={()=>getDataFromDB()} style={{width:'700px'}}>Filter</button>
-            <br/>
-            <br/>
-            <hr/>
+                    </tr>
+                    <tr>
+                        <td>End Datetime</td>
+                        <td><input type='date' placeholder='end_datetime' onChange={e=>setEnd_datetime(e.target.value)}/></td>
+                    </tr>
+                </table>
+                <br/>
+                <button onClick={()=>getDataFromDB()} style={{width:'480px'}}>Filter</button>
+                <br/>
+                <br/>
+                <hr/>
 
-            <div style={{color:'blue'}}> [P.S. Without Filter table will show all previous input values of User(who logged in)]</div>
-            <br/>
+                <div style={{color:'blue'}}> [P.S. Without Filter table will show all previous input values of User(who logged in)]</div>
+                <br/>
 
-            <table>
-                <tr>
-                    <th>Input Values</th>
-                    <th>Timestamp</th>
-                </tr>
-                {fetchedData.map(d=>{
-                
-                    return(
-                        <tr>
-                            <td>{d.input_values}</td>
-                            <td>{d.timestamp}</td>
-                        </tr>
-                    )
-                })}
-            </table>
-        </div>
+                <table>
+                    <tr>
+                        <th>Input Values</th>
+                        <th>Timestamp</th>
+                    </tr>
+                    {fetchedData.map(d=>{
+                    
+                        return(
+                            <tr>
+                                <td>{d.input_values}</td>
+                                <td>{d.timestamp}</td>
+                            </tr>
+                        )
+                    })}
+                </table>
+            </div>
+
+        :<h3>You donn't have any previous data!</h3>}
     </div>
   );
 }
