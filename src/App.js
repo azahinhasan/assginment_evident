@@ -14,14 +14,15 @@ const App=()=> {
     if(localStorage.getItem('userVerified') && localStorage.getItem('userID')!='' && 
     localStorage.getItem('email')!=''){
       setVerified(true);
+      //this condition is checking user in already login or not.
     }
   },[])
 
   return (
     <div className="App">
-        {/* <HomePage/> */}
 
         {verified?<HomePage/>:<LoginPage/>}
+        {/* if user already login then it will take to the Homepage otherwise Loginpage */}
 
        
     </div>

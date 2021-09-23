@@ -102,7 +102,7 @@ const HomePage=()=> {
     if(showSearchPage){
 
         pageData= <div>
-                    <h2>Store and Search</h2>
+                    <h2>Khoj the search Page</h2>
                     <table style={{fontWeight:'bold'}}>
                         <tr>
                             <td>Input values: </td>
@@ -134,7 +134,7 @@ const HomePage=()=> {
         
         <h2>Welcome {localStorage.getItem('email')}</h2>
 
-        <button onClick={()=>setShowSearchPage(true)}>Store and Search</button>
+        <button onClick={()=>setShowSearchPage(true)}>Search Page</button>
         <button onClick={()=>setShowSearchPage(false)}>Previous Values</button>
 
         <button onClick={()=>logOut()} style={{backgroundColor:'red',borderColor:'red'}}>LogOut</button>

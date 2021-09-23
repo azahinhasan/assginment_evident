@@ -76,7 +76,7 @@ const PriviousValue=()=> {
     <div className="App">
         
         <br/>
-        <h2>Previous Values</h2>
+        <h2>Previous Values (Section 3: API Endpoints)</h2>
         <br/>
         {fetchedData!=''?
             <div>
