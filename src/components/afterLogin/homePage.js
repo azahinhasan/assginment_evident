@@ -1,5 +1,5 @@
 
-import '../App.css';
+import '../../App.css';
 import React,{useEffect,useState} from 'react';
 import axios from 'axios';
 import moment from "moment";
@@ -17,20 +17,27 @@ const HomePage=()=> {
 
     const setDataToDB=(sortedData)=>{
 
-        // storing values in Database
+        
 
-        axios.post('https://ami-coding-pari-na-default-rtdb.asia-southeast1.firebasedatabase.app/Userdata.json',{
-            input_values:sortedData.toString(),
-            timestamp:moment().format("YYYY-MM-DD hh:mm:ss"),
-            user_id:localStorage.getItem('userID')
-        })
-        .then(response =>{
-            console.log(response.data, ' post');
-        })
-        .catch(
-            error=>{
-                console.log(error);
-        });
+
+        if(sortedData!=''){
+            // storing values in Database
+            axios.post('https://ami-coding-pari-na-default-rtdb.asia-southeast1.firebasedatabase.app/Userdata.json',{
+                input_values:sortedData.toString(),
+                timestamp:moment().format("YYYY-MM-DD hh:mm:ss"),
+                user_id:localStorage.getItem('userID')
+            })
+            .then(response =>{
+                console.log(response.data, ' post');
+            })
+            .catch(
+                error=>{
+                    console.log(error);
+            });
+        }
+        else{
+            setMsg("Failed!! Please input atlast one number!!");
+        }
 
     }
 
@@ -65,7 +72,7 @@ const HomePage=()=> {
     
         let sortedData= data.sort((a,b) => b - a); //sorting data 
 
-        //setDataToDB(sortedData.join('').split(''));  
+        setDataToDB(sortedData.join('').split(''));  
 
         //after sorting data sendting to setDataToDB fucntion to store them in DB
 
@@ -74,11 +81,18 @@ const HomePage=()=> {
     }
 
 
+    const logOut=()=>{
+        localStorage.clear();
+        window.location.reload(); 
+    }
 
     useEffect(()=>{
-        localStorage.setItem('userID','01');
+        //localStorage.setItem('userID','01');
+        setMsg('');
 
     },[])
+
+
 
 
 
@@ -100,7 +114,7 @@ const HomePage=()=> {
                             <td><input onChange={e=>setSearchValue(e.target.value)} type='number'/> </td>
                         </tr>
                         <tr>
-                            <td style={{color:'red'}}>{msg} </td>
+                            <td style={{color:'#9A00FF'}}>{msg} </td>
                             <td><button onClick={()=>searchData()}>Khoj</button></td>
                         </tr>
                         <tr>
@@ -118,11 +132,12 @@ const HomePage=()=> {
   return (
     <div className="App">
         
-        <h2>Welcome {localStorage.getItem('Username')}</h2>
+        <h2>Welcome {localStorage.getItem('email')}</h2>
 
         <button onClick={()=>setShowSearchPage(true)}>Store and Search</button>
         <button onClick={()=>setShowSearchPage(false)}>Previous Values</button>
 
+        <button onClick={()=>logOut()} style={{backgroundColor:'red',borderColor:'red'}}>LogOut</button>
 
 
 

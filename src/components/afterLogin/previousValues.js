@@ -1,5 +1,5 @@
 
-import '../App.css';
+import '../../App.css';
 import React,{useEffect,useState} from 'react';
 import axios from 'axios';
 import moment from "moment";
@@ -7,7 +7,7 @@ import moment from "moment";
 
 const PriviousValue=()=> {
 
-    const [inputValue,setInputValue]=useState('');
+
     const [fetchedData,setFetchedData]=useState(['']);
     const [start_datetime,setStart_datetime]=useState('2021-09-05 10:32:58');
     const [end_datetime,setEnd_datetime]=useState('2025-09-05  10:32:58');
@@ -26,9 +26,11 @@ const PriviousValue=()=> {
                             id: key})
                     }
                 }
-                setFetchedData(fetchedOrders);
+                //setFetchedData(fetchedOrders);
                 //console.log(fetchedOrders, ' fetchedOrders');
-                filterHandaler(fetchedOrders);
+
+                filterHandaler(fetchedOrders); 
+                //after fatching data from DB sedning to the filter Function 
 
             })
             .catch(
@@ -59,7 +61,7 @@ const PriviousValue=()=> {
         })
 
 
-        setFetchedData(filterdValues);
+        setFetchedData(filterdValues); //storing data in State
     
     
     }
@@ -106,7 +108,7 @@ const PriviousValue=()=> {
                     {fetchedData.map(d=>{
                     
                         return(
-                            <tr>
+                            <tr key={d.id}>
                                 <td>{d.input_values}</td>
                                 <td>{d.timestamp}</td>
                             </tr>
@@ -115,7 +117,7 @@ const PriviousValue=()=> {
                 </table>
             </div>
 
-        :<h3>You donn't have any previous data!</h3>}
+        :<h3>You donn't have any previous data! Please store something</h3>}
     </div>
   );
 }

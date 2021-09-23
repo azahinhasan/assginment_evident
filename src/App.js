@@ -1,11 +1,40 @@
-import logo from './logo.svg';
+import React, {useEffect,useState} from 'react';
 import './App.css';
-import HomePage from './components/homePage';
+import HomePage from './components/afterLogin/homePage';
+import LoginPage from './components/beforeLogin/logInPage';
+import * as admin from 'firebase-admin';
 
 const App=()=> {
+
+  const [verified,setVerified]=useState(false);
+
+  useEffect(()=>{
+
+    if(localStorage.getItem('userVerified') && localStorage.getItem('userID')!='' && 
+    localStorage.getItem('email')!=''){
+      setVerified(true);
+
+      admin
+        .auth()
+        .verifyIdToken(localStorage.getItem('idToken'))
+        .then((decodedToken) => {
+          const uid = decodedToken.uid;
+          // ...
+        })
+        .catch((error) => {
+          // Handle error
+        });
+
+    }
+  },[])
+
   return (
     <div className="App">
-        <HomePage/>
+        {/* <HomePage/> */}
+
+        {verified?<HomePage/>:<LoginPage/>}
+
+       
     </div>
   );
 }
