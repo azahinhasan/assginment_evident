@@ -9,16 +9,14 @@ const PriviousValue=()=> {
 
     const [inputValue,setInputValue]=useState('');
     const [fetchedData,setFetchedData]=useState(['']);
-    const [searchValue,setSearchValue]=useState('');
     const [start_datetime,setStart_datetime]=useState('2021-09-05 10:32:58');
     const [end_datetime,setEnd_datetime]=useState('2025-09-05  10:32:58');
-    const [msg,setMsg]=useState('');
-    const [result,setResult]=useState('');
+
 
     const getDataFromDB=()=>{
         axios.get('https://ami-coding-pari-na-default-rtdb.asia-southeast1.firebasedatabase.app/Userdata.json')
             .then(response =>{
-                console.log(response.data, ' getDataFromDB');
+                //console.log(response.data, ' getDataFromDB');
 
                 const fetchedOrders = [];
                 for (let key in response.data) {
@@ -29,7 +27,8 @@ const PriviousValue=()=> {
                     }
                 }
                 setFetchedData(fetchedOrders);
-                console.log(fetchedOrders, ' fetchedOrders');
+                //console.log(fetchedOrders, ' fetchedOrders');
+                filterHandaler(fetchedOrders);
 
             })
             .catch(
@@ -39,17 +38,19 @@ const PriviousValue=()=> {
     }
 
 
-    const filterHandaler=()=>{
+    const filterHandaler=(fetchedOrder)=>{
         
+        //getDataFromDB();
+
         var dateStart = new Date(start_datetime);
         var dateEnd = new Date(end_datetime);
         const filterdValues = [];
 
 
-        fetchedData.map(d=>{
+        fetchedOrder.map(d=>{
             var date =  new Date(d.timestamp);
 
-            console.log(dateStart<date, ' d');
+            //console.log(dateStart<date, ' d');
 
             if(date>=dateStart && date<=dateEnd){
                 filterdValues.push(d);
@@ -64,8 +65,6 @@ const PriviousValue=()=> {
     }
 
     useEffect(()=>{
-        localStorage.setItem('userID','01');
-
         getDataFromDB();
     },[])
 
@@ -90,11 +89,14 @@ const PriviousValue=()=> {
                 </tr>
             </table>
             <br/>
-            <button onClick={()=>filterHandaler()} style={{width:'700px'}}>Filter</button>
+            <button onClick={()=>getDataFromDB()} style={{width:'700px'}}>Filter</button>
             <br/>
             <br/>
             <hr/>
+
+            <div style={{color:'blue'}}> [P.S. Without Filter table will show all previous input values of User(who logged in)]</div>
             <br/>
+
             <table>
                 <tr>
                     <th>Input Values</th>

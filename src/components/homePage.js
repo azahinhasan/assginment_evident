@@ -9,15 +9,15 @@ import PriviousValues from './previousValues';
 const HomePage=()=> {
 
     const [inputValue,setInputValue]=useState('');
-    const [fetchedData,setFetchedData]=useState(['']);
     const [searchValue,setSearchValue]=useState('');
-    const [start_datetime,setStart_datetime]=useState('2021-09-05 10:32:58');
-    const [end_datetime,setEnd_datetime]=useState('2025-09-05  10:32:58');
+    const [showSearchPage,setShowSearchPage]=useState(true);
     const [msg,setMsg]=useState('');
     const [result,setResult]=useState('');
 
 
     const setDataToDB=(sortedData)=>{
+
+        // storing values in Database
 
         axios.post('https://ami-coding-pari-na-default-rtdb.asia-southeast1.firebasedatabase.app/Userdata.json',{
             input_values:sortedData.toString(),
@@ -35,20 +35,23 @@ const HomePage=()=> {
     }
 
     const searchData=()=>{
+        //searching data from Input values
         console.log(inputValue,' inputValue');
         console.log(searchValue,' search');
 
 
         if(inputValue!=''){
-            setMsg('');
-            let splitInputValue= inputValue.split(/[\s, ]+/);
+            setMsg('Input Values stored in DB');
+            let splitInputValue= inputValue.split(/[a-zA-Z]+|[\s., ]+/);
 
             const found = splitInputValue.find(v => v == searchValue);
 
             found!=undefined?setResult('True'):setResult('False');
 
+            console.log(found,' found');
 
-            sortInputValue(splitInputValue);
+            sortInputValue(splitInputValue); //sending data to sorting function to sort
+            
         }
         else{
             setMsg("Failed!! Input Value text box is Empty!!");
@@ -59,9 +62,13 @@ const HomePage=()=> {
 
     const sortInputValue=(data)=>{
 
-        let sortedData= data.sort((a,b) => b - a);
+    
+        let sortedData= data.sort((a,b) => b - a); //sorting data 
 
-        setDataToDB(sortedData);
+        //setDataToDB(sortedData.join('').split(''));  
+
+        //after sorting data sendting to setDataToDB fucntion to store them in DB
+
 
         console.log(sortedData, ' sortedData');
     }
@@ -71,49 +78,55 @@ const HomePage=()=> {
     useEffect(()=>{
         localStorage.setItem('userID','01');
 
-      //  getDataFromDB();
     },[])
 
-    // useEffect(()=>{
-    //     localStorage.setItem('userID','01');
-    //     getDataFromDB();
-    // },[fetchedData])
+
+
+    let pageData = '';
+
+    
+    if(showSearchPage){
+
+        pageData= <div>
+                    <h2>Store and Search</h2>
+                    <table style={{fontWeight:'bold'}}>
+                        <tr>
+                            <td>Input values: </td>
+                            <td><input onChange={e=>setInputValue(e.target.value)}/> </td>
+                        
+                        </tr>
+                        <tr>
+                            <td>Search values: </td>
+                            <td><input onChange={e=>setSearchValue(e.target.value)} type='number'/> </td>
+                        </tr>
+                        <tr>
+                            <td style={{color:'red'}}>{msg} </td>
+                            <td><button onClick={()=>searchData()}>Khoj</button></td>
+                        </tr>
+                        <tr>
+                            <td>Result </td>
+                            <td style={{color:result=='False'?'red':'green',fontWeight:'bold'}}>{result}</td>
+                        </tr> 
+                    </table>
+                </div>
+    }
+    else{
+        pageData= <PriviousValues/>;
+        // 
+    }
 
   return (
     <div className="App">
         
         <h2>Welcome {localStorage.getItem('Username')}</h2>
 
-        <button onClick={()=>searchData()}>Store and Search</button>
-        <button onClick={()=>searchData()}>Previous Values</button>
+        <button onClick={()=>setShowSearchPage(true)}>Store and Search</button>
+        <button onClick={()=>setShowSearchPage(false)}>Previous Values</button>
 
 
-            <div>
-                <h2>Store and Search</h2>
-                <table style={{fontWeight:'bold'}}>
-                    <tr>
-                        <td>Input values: </td>
-                        <td><input onChange={e=>setInputValue(e.target.value)}/> </td>
-                    
-                    </tr>
-                    <tr>
-                        <td>Search values: </td>
-                        <td><input onChange={e=>setSearchValue(e.target.value)} type='number'/> </td>
-                    </tr>
-                    <tr>
-                        <td style={{color:'red'}}>{msg} </td>
-                        <td><button onClick={()=>searchData()}>Khoj</button></td>
-                    </tr>
-                    <tr>
-                        <td>Result </td>
-                        <td style={{color:result=='False'?'red':'green',fontWeight:'bold'}}>{result}</td>
-                    </tr> 
-                </table>
-            </div>
 
 
-        <PriviousValues/>
-
+            {pageData}
 
     </div>
   );
