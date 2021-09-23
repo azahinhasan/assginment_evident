@@ -3,6 +3,7 @@ import '../App.css';
 import React,{useEffect,useState} from 'react';
 import axios from 'axios';
 import moment from "moment";
+import PriviousValues from './previousValues';
 
 
 const HomePage=()=> {
@@ -12,37 +13,12 @@ const HomePage=()=> {
     const [searchValue,setSearchValue]=useState('');
     const [start_datetime,setStart_datetime]=useState('2021-09-05 10:32:58');
     const [end_datetime,setEnd_datetime]=useState('2025-09-05  10:32:58');
-    const [filter,setFilter]=useState(true);
+    const [msg,setMsg]=useState('');
     const [result,setResult]=useState('');
 
-    const getDataFromDB=()=>{
-        axios.get('https://ami-coding-pari-na-default-rtdb.asia-southeast1.firebasedatabase.app/Userdata.json')
-            .then(response =>{
-                console.log(response.data, ' getDataFromDB');
-
-                const fetchedOrders = [];
-                for (let key in response.data) {
-                    if( response.data[key].user_id == localStorage.getItem('userID')){
-                        fetchedOrders.push({       //puting get value in arrayyyyyyyy
-                            ...response.data[key],
-                            id: key})
-                    }
-                }
-                setFetchedData(fetchedOrders);
-                console.log(fetchedOrders, ' fetchedOrders');
-
-
-
-            })
-            .catch(
-                error=>{
-                    console.log(error);
-            });
-    }
 
     const setDataToDB=(sortedData)=>{
 
-        
         axios.post('https://ami-coding-pari-na-default-rtdb.asia-southeast1.firebasedatabase.app/Userdata.json',{
             input_values:sortedData.toString(),
             timestamp:moment().format("YYYY-MM-DD hh:mm:ss"),
@@ -54,7 +30,8 @@ const HomePage=()=> {
         .catch(
             error=>{
                 console.log(error);
-            });
+        });
+
     }
 
     const searchData=()=>{
@@ -62,75 +39,58 @@ const HomePage=()=> {
         console.log(searchValue,' search');
 
 
+        if(inputValue!=''){
+            setMsg('');
+            let splitInputValue= inputValue.split(/[\s, ]+/);
 
-        let splitInputValue= inputValue.split(/[\s, ]+/);
+            const found = splitInputValue.find(v => v == searchValue);
 
-
-        // let d= parseInt(inputValue);
-
-        //setSplitInputValue(splitInputValue);
-
-        sortInputValue(splitInputValue);
-
-        const found = splitInputValue.find(v => v == searchValue);
-
-        found!=undefined?setResult('True'):setResult('False');
+            found!=undefined?setResult('True'):setResult('False');
 
 
+            sortInputValue(splitInputValue);
+        }
+        else{
+            setMsg("Failed!! Input Value text box is Empty!!");
+        }
 
-        console.log(found,' result');
     }
 
 
     const sortInputValue=(data)=>{
 
         let sortedData= data.sort((a,b) => b - a);
-       // setDataToDB(sortedData);
-        getDataFromDB();
+
+        setDataToDB(sortedData);
 
         console.log(sortedData, ' sortedData');
     }
 
-    const filterHandaler=()=>{
-        
-        var dateStart = new Date(start_datetime);
-        var dateEnd = new Date(end_datetime);
-        const filterdValues = [];
 
-
-
-        fetchedData.map(d=>{
-            var date =  new Date(d.timestamp);
-
-            console.log(dateStart<date, ' d');
-
-            if(date>=dateStart && date<=dateEnd){
-                filterdValues.push(d);
-            }
-        
-        })
-
-    
-        dateStart = new Date('2012-09-01');
-        dateEnd = new Date('06/25/2013');
-
-       console.log(dateStart);
-
-        setFetchedData(filterdValues);
-    
-    
-    }
 
     useEffect(()=>{
         localStorage.setItem('userID','01');
+
+      //  getDataFromDB();
     },[])
+
+    // useEffect(()=>{
+    //     localStorage.setItem('userID','01');
+    //     getDataFromDB();
+    // },[fetchedData])
 
   return (
     <div className="App">
         
-        <h2>Home Page</h2>
+        <h2>Welcome {localStorage.getItem('Username')}</h2>
+
+        <button onClick={()=>searchData()}>Store and Search</button>
+        <button onClick={()=>searchData()}>Previous Values</button>
+
+
             <div>
-                <table>
+                <h2>Store and Search</h2>
+                <table style={{fontWeight:'bold'}}>
                     <tr>
                         <td>Input values: </td>
                         <td><input onChange={e=>setInputValue(e.target.value)}/> </td>
@@ -141,48 +101,20 @@ const HomePage=()=> {
                         <td><input onChange={e=>setSearchValue(e.target.value)} type='number'/> </td>
                     </tr>
                     <tr>
-                        <td> </td>
+                        <td style={{color:'red'}}>{msg} </td>
                         <td><button onClick={()=>searchData()}>Khoj</button></td>
                     </tr>
                     <tr>
                         <td>Result </td>
-                        <td>{result}</td>
+                        <td style={{color:result=='False'?'red':'green',fontWeight:'bold'}}>{result}</td>
                     </tr> 
                 </table>
             </div>
 
-        <div>
 
-        </div>
+        <PriviousValues/>
 
-        <br/>
-        <h3>Privious Values</h3>
-        <br/>
-        <div>
-            <table>
-                <tr>
-                    <td><input type='date' placeholder='start_datetime' onChange={e=>setStart_datetime(e.target.value)}/></td>
-                    <td><input type='date' placeholder='end_datetime' onChange={e=>setEnd_datetime(e.target.value)}/></td>
-                    <td><button onClick={()=>filterHandaler()}>Filter</button></td>
-                </tr>
-            </table>
-            <br/>
-            <table>
-                <tr>
-                    <th>Input Values</th>
-                    <th>Timestamp</th>
-                </tr>
-                {fetchedData.map(d=>{
-                
-                    return(
-                        <tr>
-                            <td>{d.input_values}</td>
-                            <td>{d.timestamp}</td>
-                        </tr>
-                    )
-                })}
-            </table>
-        </div>
+
     </div>
   );
 }
