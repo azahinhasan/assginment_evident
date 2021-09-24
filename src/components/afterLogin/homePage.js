@@ -50,7 +50,7 @@ const HomePage=()=> {
 
         if(inputValue!=''){
             setMsg('Input Values stored in DB');
-            let splitInputValue= inputValue.split(/[a-zA-Z]+|[\s., ]/);
+        let splitInputValue= inputValue.split(/[a-zA-Z]+|[\s., */]/);
             //removing things like Alphabet,space,comma etc from input values
 
             const found = splitInputValue.find(v => v == searchValue);
@@ -77,12 +77,18 @@ const HomePage=()=> {
         let sortedData= data.sort((a,b) => b - a); //sorting data in descending order
 
         //setDataToDB(sortedData.join('').split('')); 
-        setDataToDB(sortedData.filter(n => n));
+       // setDataToDB(sortedData.filter(n => n));
+        //split('-,')
         //removng extra spaces again  sorting data sending to setDataToDB fucntion to store them in DB
 
 
+        var filterOutIsNotInteger = sortedData.filter(function (item) {
+            return (parseInt(item) == item);
+          });
 
-        console.log(sortedData.filter(n => n), ' sortedData');
+          setDataToDB(filterOutIsNotInteger);
+
+        console.log(filterOutIsNotInteger, ' sortedData');
     }
 
 
