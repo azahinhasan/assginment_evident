@@ -1,6 +1,6 @@
 # assginment_evident
 
-## I used React.Js and Google Firebase (for DB) for this project. 
+## I used React.Js and Google Firebase (for DB) in this project. 
 ## I also host it in Github hosting: https://azahinhasan.github.io/assginment_evident/
 
 ## Instructions :
