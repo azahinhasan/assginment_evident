@@ -1,7 +1,7 @@
 # assginment_evident
 
 ## I used React.Js and Google Firebase (for DB) in this project. 
-## I also host it in Github hosting: https://azahinhasan.github.io/assginment_evident/
+## Also hosted in Github hosting: https://azahinhasan.github.io/assginment_evident/
 
 ## Instructions :
 ### 1st: Go to the project folder and run CMD and type:
