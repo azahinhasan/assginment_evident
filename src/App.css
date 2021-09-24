@@ -99,3 +99,18 @@ input, select {
   box-sizing: border-box;
 }
 
+.instructions{
+
+  border: 1px solid black;
+  width: 900px;
+  text-align: left;
+  padding: 10px;
+
+  position: fixed;
+  left: 50%;
+  bottom: 0px;
+  transform: translate(-50%, -10%);
+  margin: 0 auto;
+
+
+}
