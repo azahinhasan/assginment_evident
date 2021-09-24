@@ -29,7 +29,7 @@ const PriviousValue=()=> {
                     }
                 }
                 //setFetchedData(fetchedOrders);
-                //console.log(fetchedOrders, ' fetchedOrders');
+                console.log(fetchedOrders, ' fetchedOrders');
 
                 filterHandaler(fetchedOrders); 
 
@@ -73,6 +73,7 @@ const PriviousValue=()=> {
 
     useEffect(()=>{
         getDataFromDB();
+        console.log(' priviousValue useEffect');
     },[])
 
 
@@ -83,23 +84,26 @@ const PriviousValue=()=> {
         <br/>
         <h2>Previous Values (Section 3: API Endpoints)</h2>
         <br/>
+        <div>
+            <table  style={{width:'480px',fontWeight:'bold'}}>
+                <tr>
+                    <td>Start Datetime</td>
+                    <td><input type='date' placeholder='start_datetime' onChange={e=>setStart_datetime(e.target.value)}/></td>
+
+                </tr>
+                <tr>
+                    <td>End Datetime</td>
+                    <td><input type='date' placeholder='end_datetime' onChange={e=>setEnd_datetime(e.target.value)}/></td>
+                </tr>
+            </table>
+            <br/>
+            <button onClick={()=>getDataFromDB()} style={{width:'480px'}}>Filter</button>
+            <br/>
+        </div>
+        <br/>
         {fetchedData!=''?
         //if fatchData state is not emply then it will show this part
             <div>
-                <table  style={{width:'480px',fontWeight:'bold'}}>
-                    <tr>
-                        <td>Start Datetime</td>
-                        <td><input type='date' placeholder='start_datetime' onChange={e=>setStart_datetime(e.target.value)}/></td>
-
-                    </tr>
-                    <tr>
-                        <td>End Datetime</td>
-                        <td><input type='date' placeholder='end_datetime' onChange={e=>setEnd_datetime(e.target.value)}/></td>
-                    </tr>
-                </table>
-                <br/>
-                <button onClick={()=>getDataFromDB()} style={{width:'480px'}}>Filter</button>
-                <br/>
                 <br/>
                 <hr/>
 
@@ -124,7 +128,7 @@ const PriviousValue=()=> {
                 </table>
             </div>
 
-        :<h3>You donn't have any previous data! Please store something</h3>}
+        :<h3>You donn't have any previous data or in given timestamp range!</h3>}
         {/* otherwise it will show this part */}
     </div>
   );

@@ -20,7 +20,7 @@ const HomePage=()=> {
         
 
 
-        if(sortedData!=''){  //checking sortedData are emepty or not
+        if(sortedData!='' && searchValue!=''){  //checking sortedData are emepty or not
             // storing values in Database
             axios.post('https://ami-coding-pari-na-default-rtdb.asia-southeast1.firebasedatabase.app/Userdata.json',{
                 input_values:sortedData.toString(),
@@ -36,7 +36,7 @@ const HomePage=()=> {
             });
         }
         else{ //if sorteddata are empty it will not store in DB
-            setMsg("Failed!! Please input atlast one number!!");
+            setMsg("Failed!! Textbox is Emply or given invalid data!!");
             setResult('');
         }
 
@@ -50,7 +50,7 @@ const HomePage=()=> {
 
         if(inputValue!=''){
             setMsg('Input Values stored in DB');
-            let splitInputValue= inputValue.split(/[a-zA-Z]+|[\s., ]+/);
+            let splitInputValue= inputValue.split(/[a-zA-Z]+|[\s., ]/);
             //removing things like Alphabet,space,comma etc from input values
 
             const found = splitInputValue.find(v => v == searchValue);
@@ -74,14 +74,15 @@ const HomePage=()=> {
     const sortInputValue=(data)=>{
 
     
-        let sortedData= data.sort((a,b) => b - a); //sorting data 
+        let sortedData= data.sort((a,b) => b - a); //sorting data in descending order
 
-        setDataToDB(sortedData.join('').split('')); 
-
+        //setDataToDB(sortedData.join('').split('')); 
+        setDataToDB(sortedData.filter(n => n));
         //removng extra spaces again  sorting data sending to setDataToDB fucntion to store them in DB
 
 
-        console.log(sortedData, ' sortedData');
+
+        console.log(sortedData.filter(n => n), ' sortedData');
     }
 
 
@@ -113,11 +114,13 @@ const HomePage=()=> {
                         <br/>
                         &nbsp;&nbsp; Will store in DB: 3,2,1
                     <br/>
-                    3. In Privious Values page it will show by defult all privious input values of that user.
+                    4. If Search Values or Input values textbox are empty,values will not store in DB
                     <br/>
-                    4.User can filter by Start Datetime and End Datetime
+                    5. In Privious Values page it will show by defult all privious input values of that user.
                     <br/>
-                    5.If user is not enterd any input values and Is not press on Khoj button there will be Emapty msg in Previous page
+                    6.User can filter by Start Datetime and End Datetime
+                    <br/>
+                    7.If user is not enterd any input values and Is not press on Khoj button there will be Emapty msg in Previous page
                 </div>
             </div>
     )
