@@ -8,8 +8,12 @@ const PriviousValue=()=> {
 
 
     const [fetchedData,setFetchedData]=useState(['']);
-    const [start_datetime,setStart_datetime]=useState('2000-01-01 10:32:58');
-    const [end_datetime,setEnd_datetime]=useState('2050-12-12  10:32:58');
+    // const [start_datetime,setStart_datetime]=useState('2000-01-01 10:32:58');
+    // const [end_datetime,setEnd_datetime]=useState('2050-12-12  10:32:58');
+
+    const [start_datetime,setStart_datetime]=useState('');
+    const [end_datetime,setEnd_datetime]=useState('');
+
 
 
     const getDataFromDB=()=>{
@@ -29,7 +33,7 @@ const PriviousValue=()=> {
                     }
                 }
                 //setFetchedData(fetchedOrders);
-                console.log(fetchedOrders, ' fetchedOrders');
+                // console.log(fetchedOrders, ' fetchedOrders');
 
                 filterHandaler(fetchedOrders); 
 
@@ -46,34 +50,39 @@ const PriviousValue=()=> {
     const filterHandaler=(fetchedOrder)=>{
         
         //filtering data according to user given Start Datetime and End Datetime
-        //defult time are 2000-01-01 10:32:58 and 2050-12-12  10:32:58
+        //defult there is no range so It will print all data
 
-        var dateStart = new Date(start_datetime);
-        var dateEnd = new Date(end_datetime);
-        const filterdValues = [];
-
-
-        fetchedOrder.map(d=>{
-            var date =  new Date(d.timestamp);
-
-            //console.log(dateStart<date, ' d');
-
-            if(date>=dateStart && date<=dateEnd){
-                filterdValues.push(d);
-                //filtering and pushing them in array
-            }
+        if(start_datetime=='' && end_datetime==''){
+            setFetchedData(fetchedOrder);
+        }
         
-        })
-
-
-        setFetchedData(filterdValues); //storing filterd data in State
+        else{
+            var dateStart = new Date(start_datetime);
+            var dateEnd = new Date(end_datetime);
+            const filterdValues = [];
     
     
+            fetchedOrder.map(d=>{
+                var date =  new Date(d.timestamp);
+    
+                //console.log(dateStart<date, ' d');
+    
+                if(date>=dateStart && date<=dateEnd){
+                    filterdValues.push(d);
+                    //filtering and pushing them in array
+                }
+            
+            })
+    
+            setFetchedData(filterdValues); //storing filterd data in State
+        }
+ 
     }
 
     useEffect(()=>{
         getDataFromDB();
-        console.log(' priviousValue useEffect');
+        getDataFromDB();
+        console.log(fetchedData,' priviousValue useEffect');
     },[])
 
 
@@ -128,7 +137,7 @@ const PriviousValue=()=> {
                 </table>
             </div>
 
-        :<h3>You donn't have any previous data or in given timestamp range!</h3>}
+        :<h3>You donn't have any previous data or in the given timestamp range!</h3>}
         {/* otherwise it will show this part */}
     </div>
   );

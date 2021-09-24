@@ -184,9 +184,6 @@ const HomePage=()=> {
 
             {pageData}
 
-           
-
-
         </div>
     );
 }
