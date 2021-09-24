@@ -2,7 +2,6 @@
 import '../../App.css';
 import React,{useEffect,useState} from 'react';
 import axios from 'axios';
-import moment from "moment";
 import SignUpPage from './signUpPage';
 
 
@@ -12,6 +11,7 @@ const PriviousValue=()=> {
     const [password,setPassword]=useState('');
     const [showLoginPage,setShowLoginPage]=useState(true);
     const authApi = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDaMLRpxmGQ6asNZYY0_m1Y8UMxKelLKcw';
+    //Api from Firebase for singIn
     const [msg,setMsg]=useState('');
 
    
@@ -31,6 +31,7 @@ const PriviousValue=()=> {
                 localStorage.setItem('idToken',response.data.idToken);
                 localStorage.setItem('userVerified',true);
                 window.location.reload(); 
+                //sucessfully sign in storing data in local storage and reloding the page
             })
             .catch(
                 error=>{
@@ -47,6 +48,7 @@ const PriviousValue=()=> {
     let pageData = '';
 
     if(showLoginPage){
+   
         pageData=(
             <div>
                 <h2>LogIn Page</h2>
@@ -70,6 +72,7 @@ const PriviousValue=()=> {
         )
     }
     else{
+        //if press on Go to SignUp button the value of showLoginPage will become false and it will show this part
         pageData=<SignUpPage setShowLoginPage={setShowLoginPage}/>
     }
 
