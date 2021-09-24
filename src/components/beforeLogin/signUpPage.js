@@ -9,36 +9,44 @@ const PriviousValue=({setShowLoginPage})=> {
 
     const [email,setEmail]=useState('');
     const [password,setPassword]=useState('');
+    const [reTypePassword,setReTypePassword]=useState('');
     const [msg,setMsg]=useState('');
     const signUpApi = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDaMLRpxmGQ6asNZYY0_m1Y8UMxKelLKcw';
     //Api from Firebase for singUp
    
     const singup=()=>{
-        const authData ={
-            email: email,
-            password: password,
-            returnSecureToken:true
-             //sorting user input data in temp object
-        }
-       
-        axios.post(signUpApi,authData)
-            .then(response =>{
-                setMsg('');
-                console.log(response.data, ' post');
-                localStorage.setItem('userID',response.data.localId);
-                localStorage.setItem('email',response.data.email);
-                localStorage.setItem('idToken',response.data.idToken);
-                localStorage.setItem('userVerified',true);
-                window.location.reload(); 
-                //sucessfully sign up storing data in local storage
-            })
-            .catch(
-                error=>{
-                    console.log(error.response.data.error);
-                    setMsg('FAILED!! '+error.response.data.error.message);
-                    //if failed it will show this error msg from Firebase
-            });
 
+        if(reTypePassword==password){
+            
+            setMsg('');
+            const authData ={
+                email: email,
+                password: password,
+                returnSecureToken:true
+                //sorting user input data in temp object
+            }
+        
+            axios.post(signUpApi,authData)
+                .then(response =>{
+                    setMsg('');
+                    console.log(response.data, ' post');
+                    localStorage.setItem('userID',response.data.localId);
+                    localStorage.setItem('email',response.data.email);
+                    localStorage.setItem('idToken',response.data.idToken);
+                    localStorage.setItem('userVerified',true);
+                    window.location.reload(); 
+                    //sucessfully sign up storing data in local storage
+                })
+                .catch(
+                    error=>{
+                        console.log(error.response.data.error);
+                        setMsg('FAILED!! '+error.response.data.error.message);
+                        //if failed it will show this error msg from Firebase
+                });
+        }
+        else{
+            setMsg('Re-Type Password and Password are not match!');
+        }
 
     }
 
@@ -58,6 +66,10 @@ const PriviousValue=({setShowLoginPage})=> {
             <tr>
                 <td>Password</td>
                 <td><input placeholder='at least 6 characters' type="password" onChange={e=>setPassword(e.target.value)}/></td>
+            </tr>
+            <tr>
+                <td>Re-Type Password</td>
+                <td><input placeholder='at least 6 characters' type="password" onChange={e=>setReTypePassword(e.target.value)}/></td>
             </tr>
         </table>
         <br/>

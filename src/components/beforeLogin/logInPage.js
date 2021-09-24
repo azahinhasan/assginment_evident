@@ -41,6 +41,13 @@ const PriviousValue=()=> {
 
     }
 
+    const handleKeyDown=(e)=> {
+        //if user press Enter button will will also call login function
+        if (e.key === 'Enter') {
+            logIn();
+        }
+      }
+
     useEffect(()=>{
         
     },[])
@@ -55,11 +62,11 @@ const PriviousValue=()=> {
                 <table style={{width: '600px'}}>
                     <tr>
                         <td>Email</td>
-                        <td><input type="email" onChange={e=>setEmail(e.target.value)}/></td>
+                        <td><input type="email" onChange={e=>setEmail(e.target.value)} onKeyDown={(e)=>handleKeyDown(e)}/></td>
                     </tr>
                     <tr>
                         <td>Password</td>
-                        <td><input type="password" onChange={e=>setPassword(e.target.value)}/></td>
+                        <td><input type="password" onChange={e=>setPassword(e.target.value)} onKeyDown={(e)=>handleKeyDown(e)}/></td>
                     </tr>
                 </table>
                 <br/>

@@ -22,7 +22,7 @@ const App=()=> {
     <div className="App">
 
         {verified?<HomePage/>:<LoginPage/>}
-        {/* if user already login then it will take to the Homepage otherwise Loginpage */}
+        {/* if user already login then it will take to the Homepage otherwise Login page */}
 
        
     </div>
