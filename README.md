@@ -5,7 +5,7 @@
 
 ## Instructions :
 ### 1st: Go to the project folder and run CMD and type:
-#### > npm install 
+#### @@ > npm install @@
 #### > npm start
 
 ### 2nd: After running this app it will take you to login page.  Here, you can login with : 
