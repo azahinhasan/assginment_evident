@@ -52,7 +52,7 @@ const HomePage=()=> {
             
 
             let splitInputValue= inputValue.split(/[a-zA-Z]+|[\s., ]/);
-            //removing things like Alphabet,space,comma etc from input values
+            //filtering out things like Alphabet,space,comma etc from input values
 
             const found = splitInputValue.find(v => v == searchValue);
             //searching operation
@@ -77,7 +77,7 @@ const HomePage=()=> {
     
         var filterOutIsNotInteger = data.filter(function (item) {
             return (parseInt(item) == item);
-            //filerting for 2nd time and making sure there is only Integer type element in the array
+            //filtering for 2nd time and making sure there is only Integer type element in the array
             //if there is other type it will removed from array
         });
 
