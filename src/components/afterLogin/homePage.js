@@ -111,20 +111,32 @@ const HomePage=()=> {
                 <div>
                     1. In Input Values user can input like 1, 2 or 1,2 or 1.2 or 1 2 etc.
                     <br/>
-                    2.If you give Alphabet in input it will not store in DB.
+                    2. If you give Alphabet or any thing which is not Integer in input it will not store in DB.
                     Such as: 
                         <br/>
-                        &nbsp;&nbsp; Input Given: 1, -A, 4, 9,  -2, 7, b 
+                        &nbsp;&nbsp; Input Given: 1, -A, 4, 9,  -2, 7, b ,*,=,99
                         <br/>
-                        &nbsp;&nbsp; Will store in DB: 9, 7, 4, 1, -2
+                        &nbsp;&nbsp; Will store in DB: 99, 9, 7, 4, 1, -2
+                    <br/>
+                    3. Search from above Input Values:
+                        <br/>
+                        &nbsp;&nbsp; Search value: 9
+                        <br/>
+                        &nbsp;&nbsp; Result: True
+                        <br/>
+                        &nbsp;&nbsp; Search value: 50
+                        <br/>
+                        &nbsp;&nbsp; Result: False
+                        <br/>
+                        &nbsp;&nbsp; Search value: -2
+                        <br/>
+                        &nbsp;&nbsp; Result: True
                     <br/>
                     4. If Search Values or Input values textbox are empty,values will not store in DB
                     <br/>
-                    5. In Privious Values page it will show by defult all privious input values of that user.
+                    5. In Previous Values page it will show by defult all previous input values of that user.
                     <br/>
-                    6.User can filter by Start Datetime and End Datetime
-                    <br/>
-                    7.If user is not enterd any input values and Is not press on Khoj button there will be Emapty msg in Previous page
+                    6. User can filter by Start Datetime and End Datetime
                 </div>
             </div>
     )
