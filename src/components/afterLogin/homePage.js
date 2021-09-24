@@ -17,10 +17,9 @@ const HomePage=()=> {
 
     const setDataToDB=(sortedData)=>{
 
-        
-
-
         if(sortedData!='' && searchValue!=''){  //checking sortedData are emepty or not
+
+            setMsg('Input Values stored in DB');
             // storing values in Database
             axios.post('https://ami-coding-pari-na-default-rtdb.asia-southeast1.firebasedatabase.app/Userdata.json',{
                 input_values:sortedData.toString(),
@@ -49,8 +48,10 @@ const HomePage=()=> {
 
 
         if(inputValue!=''){
-            setMsg('Input Values stored in DB');
-        let splitInputValue= inputValue.split(/[a-zA-Z]+|[\s., */]/);
+
+            
+
+            let splitInputValue= inputValue.split(/[a-zA-Z]+|[\s., ]/);
             //removing things like Alphabet,space,comma etc from input values
 
             const found = splitInputValue.find(v => v == searchValue);
@@ -74,21 +75,19 @@ const HomePage=()=> {
     const sortInputValue=(data)=>{
 
     
-        let sortedData= data.sort((a,b) => b - a); //sorting data in descending order
-
-        //setDataToDB(sortedData.join('').split('')); 
-       // setDataToDB(sortedData.filter(n => n));
-        //split('-,')
-        //removng extra spaces again  sorting data sending to setDataToDB fucntion to store them in DB
-
-
-        var filterOutIsNotInteger = sortedData.filter(function (item) {
+        var filterOutIsNotInteger = data.filter(function (item) {
             return (parseInt(item) == item);
-          });
+            //filerting for 2nd time and making sure there is only Integer type element in the array
+            //if there is other type it will removed from array
+        });
 
-          setDataToDB(filterOutIsNotInteger);
 
-        console.log(filterOutIsNotInteger, ' sortedData');
+        let sortedData= filterOutIsNotInteger.sort((a,b) => b - a); //sorting array in descending order
+
+        setDataToDB(sortedData); 
+        //sending this sorted array to setDataToDB() for storing data in Database
+
+        console.log(sortedData, ' sending to DB');
     }
 
 
@@ -102,7 +101,6 @@ const HomePage=()=> {
         //localStorage.setItem('userID','01');
         setMsg('');
         setResult('');
-        console.log('useEffect');
     },[])
 
 
@@ -116,9 +114,9 @@ const HomePage=()=> {
                     2.If you give Alphabet in input it will not store in DB.
                     Such as: 
                         <br/>
-                        &nbsp;&nbsp; Input Given: 1, 2, A , 3  
+                        &nbsp;&nbsp; Input Given: 1, -A, 4, 9,  -2, 7, b 
                         <br/>
-                        &nbsp;&nbsp; Will store in DB: 3,2,1
+                        &nbsp;&nbsp; Will store in DB: 9, 7, 4, 1, -2
                     <br/>
                     4. If Search Values or Input values textbox are empty,values will not store in DB
                     <br/>
@@ -160,7 +158,8 @@ const HomePage=()=> {
                         </tr> 
                     </table>
 
-                    {Instructions}
+                    {Instructions} 
+                    {/* showing instructions part by calling Instructions variable */}
 
                 </div>
     }
